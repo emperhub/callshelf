@@ -1,2 +1,5 @@
 *.log
 *.zip
+node_modules/
+dist/
+.vite/

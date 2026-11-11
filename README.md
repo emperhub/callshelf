@@ -34,6 +34,35 @@ warp-cli connect
 
 แอพเป็นสคริปต์ PowerShell ที่รันบน `powershell.exe` ที่ Windows เซ็นชื่อให้อยู่แล้ว จึงเปิดได้บนเครื่องที่ Smart App Control บล็อกไฟล์ `.exe` ที่ compile เอง
 
+## ในแอพ OpenCode
+
+มีแผงของ callshelf อยู่ใน OpenCode Desktop ด้วย — IP ปัจจุบัน, ปุ่มเปลี่ยน IP, log ผลลัพธ์ และปุ่มลัดบน titlebar
+
+ติดตั้ง:
+
+```powershell
+# จากโฟลเดอร์ที่โคลน repo นี้มา
+powershell -ExecutionPolicy Bypass -File .\plugin\install.ps1
+```
+
+สคริปต์จะก๊อปตัวปลั๊กอินกับ `rotate.ps1` ไปที่ `%USERPROFILE%\.config\opencode\plugins\callshelf`
+
+ในแอพ:
+
+- ปุ่มรูปโลกบน titlebar = เปลี่ยน IP ทันที ไม่ต้องเปิดแผง
+- แผง **การเชื่อมต่อ** เปิดจากเมนูเลย์เอาต์ด้านขวาบนของ session
+- คำสั่งใน command palette: *เปิดแผงการเชื่อมต่อ*, *เปลี่ยน IP ตอนนี้*
+
+ตัวปลั๊กอินเป็น GUI plugin ของ OpenCode (`@opencode/plugin/gui`) ตัว bundle ที่ build แล้วอยู่ใน `plugin/gui-experimental.cjs` ไม่ต้องมี Node หรือ Vite ตอนติดตั้ง
+
+แก้โค้ดแล้ว build ใหม่:
+
+```powershell
+cd plugin
+npm install
+npx vite build
+```
+
 ## CLI
 
 ```powershell
@@ -71,8 +100,10 @@ warp-cli connect
 |---|---|
 | `callshelf.cmd` | เปิดแอพ |
 | `callshelf-gui.ps1` | หน้าต่างแอพ |
-| `rotate.ps1` | ตัวหมุน IP (ใช้ร่วมกับ CLI) |
+| `rotate.ps1` | ตัวหมุน IP (ใช้ร่วมกับ CLI และปลั๊กอิน) |
 | `rotate.cmd` | ตัวเรียก CLI แบบกดง่าย |
+| `plugin/` | แผงใน OpenCode Desktop (GUI plugin + bundle ที่ build แล้ว) |
+| `plugin/install.ps1` | ติดตั้งแผงเข้า OpenCode |
 
 ## หมายเหตุ
 
