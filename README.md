@@ -1,0 +1,55 @@
+# callshelf
+
+สคริปต์เปลี่ยน IP ขาออกของเครื่องด้วย Cloudflare WARP — ไม่รีบูตเราเตอร์ ไม่ตัดเน็ตบ้าน ไม่ยุ่งกับบัญชีหรือโควต้าของบริการอื่น
+
+## ต้องมี
+
+- Windows 10/11
+- Cloudflare WARP: `winget install Cloudflare.Warp`
+- ตั้งโหมด proxy ครั้งเดียว (แนะนำ — ทราฟฟิกอื่นของเครื่องไม่เปลี่ยนเส้นทาง):
+
+```powershell
+warp-cli mode proxy
+warp-cli proxy port 40000
+warp-cli connect
+```
+
+ถ้าใช้โหมดเต็ม (`warp-cli mode warp`) สคริปต์ก็ยังอ่าน IP ผ่าน tunnel ได้ แต่ทราฟฟิกทั้งเครื่องจะวิ่งผ่าน WARP
+
+## ใช้
+
+```powershell
+# ดู IP ปัจจุบัน
+.\rotate.ps1
+
+# เปลี่ยน IP
+.\rotate.ps1 -Rotate
+
+# เปลี่ยนแบบบังคับลงทะเบียนใหม่ (ใช้เมื่อ reconnect แล้ว IP ยังเดิม)
+.\rotate.ps1 -Rotate -Deep
+
+# ให้สคริปต์อื่นอ่านผล
+.\rotate.ps1 -Rotate -Json
+```
+
+ดับเบิลคลิก `rotate.cmd` จะได้เมนูแบบกดง่าย (ใส่ `-Rotate` ต่อท้ายก็ได้)
+
+ผลลัพธ์ปกติ:
+
+```
+  203.0.113.7 -> 198.51.100.42  (reconnect, 2.4s)
+```
+
+## ค่า exit
+
+| code | ความหมาย |
+|---|---|
+| `0` | ได้ IP ใหม่แล้ว |
+| `1` | ไม่เปลี่ยน / WARP ไม่ตอบ / เป็น registration ขององค์กร |
+
+## หมายเหตุ
+
+- ค่าเริ่มต้นจะ reconnect ก่อน (~2 วินาที) ถ้า IP ยังเดิมจึงค่อยลบ registration แล้วสร้างใหม่ ซึ่งอาจโดน Cloudflare จำกัดความถี่
+- ไม่แตะ router, PPPoE, firewall หรือ service อื่นบนเครื่อง
+- ถ้า tunnel เป็นขององค์กร (Team/Enterprise/Managed) สคริปต์จะปฏิเสธ ไม่ลบ registration ให้
+- เปลี่ยน IP ถี่เกินไปปลายทางอาจมองว่าเป็นพฤติกรรมผิดปกติ เว้นช่วงอย่างน้อย 8–10 วินาที
