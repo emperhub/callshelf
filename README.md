@@ -129,11 +129,18 @@ npx vite build
 | `plugin/` | แผงใน OpenCode Desktop (GUI plugin + bundle ที่ build แล้ว) |
 | `plugin/install.ps1` | ติดตั้งแผงเข้า OpenCode |
 | `tests/rotate-cli.test.sh` | ทดสอบ Linux CLI ด้วยคำสั่งจำลอง |
+| `scripts/update-contributors.mjs` | สร้างภาพผู้ร่วมพัฒนาจาก GitHub |
+| `.github/workflows/update-contributors.yml` | อัปเดตภาพผู้ร่วมพัฒนาด้วย GitHub Actions |
+| `docs/contributors.svg` | ภาพผู้ร่วมพัฒนาใน README |
+| `tests/update-contributors.test.mjs` | ทดสอบตัวสร้างภาพและ workflow |
 
 ## ผู้ร่วมพัฒนา
 
-- [Tatsuyato](https://github.com/Tatsuyato) — ผู้พัฒนาและผู้ส่งการเปลี่ยนแปลง
-- [GitHub Copilot](https://github.com/features/copilot) — ร่วมพัฒนา Linux CLI
+[![ผู้มีส่วนร่วมใน callshelf](docs/contributors.svg)](https://github.com/emperhub/callshelf/graphs/contributors)
+
+ภาพนี้อัปเดตอัตโนมัติด้วย GitHub Actions จากรายชื่อ contributors ของ repository
+
+- GitHub Copilot — ร่วมพัฒนา Linux CLI
 
 ## หมายเหตุ
 
