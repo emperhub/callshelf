@@ -2,12 +2,13 @@
 
 เปลี่ยน IP ขาออกของเครื่องด้วย Cloudflare WARP — ไม่รีบูตเราเตอร์ ไม่ตัดเน็ตบ้าน ไม่ยุ่งกับบัญชีหรือโควต้าของบริการอื่น
 
-มีทั้งแอพหน้าต่าง (GUI) และตัวสั่งงานแบบ CLI ใช้ตัวหมุนตัวเดียวกัน
+มีแอพหน้าต่าง (GUI) บน Windows และตัวสั่งงานแบบ CLI บน Windows/Linux
 
 ## ต้องมี
 
-- Windows 10/11
-- Cloudflare WARP: `winget install Cloudflare.Warp`
+- Windows 10/11 สำหรับ GUI และ CLI แบบ PowerShell
+- Linux สำหรับ CLI แบบ Bash
+- Cloudflare WARP CLI และ `curl` ติดตั้งและเชื่อมต่อไว้แล้วบนระบบปฏิบัติการที่ใช้งาน
 - ตั้งโหมด proxy ครั้งเดียว (แนะนำ — ทราฟฟิกอื่นของเครื่องไม่เปลี่ยนเส้นทาง):
 
 ```powershell
@@ -65,6 +66,8 @@ npx vite build
 
 ## CLI
 
+### Windows
+
 ```powershell
 # ดู IP ปัจจุบัน
 .\rotate.ps1
@@ -80,6 +83,26 @@ npx vite build
 ```
 
 ดับเบิลคลิก `rotate.cmd` จะได้เมนูแบบกดง่าย (ใส่ `-Rotate` ต่อท้ายก็ได้)
+
+### Linux
+
+ใช้ `rotate.sh` ซึ่งเรียก `warp-cli` และ `curl` ที่ติดตั้งอยู่ในระบบ:
+
+```bash
+# ดู IP และสถานะ WARP
+./rotate.sh
+
+# เปลี่ยน IP
+./rotate.sh --rotate
+
+# บังคับลงทะเบียน WARP ใหม่
+./rotate.sh --deep
+
+# ส่งผลลัพธ์เป็น JSON
+./rotate.sh --rotate --json
+```
+
+ไม่ต้องติดตั้งแพ็กเกจเพิ่มเติม; ต้องติดตั้งและเชื่อมต่อ Cloudflare WARP รวมถึงติดตั้ง `curl` ก่อนใช้งาน
 
 ผลลัพธ์ปกติ:
 
@@ -101,9 +124,16 @@ npx vite build
 | `callshelf.cmd` | เปิดแอพ |
 | `callshelf-gui.ps1` | หน้าต่างแอพ |
 | `rotate.ps1` | ตัวหมุน IP (ใช้ร่วมกับ CLI และปลั๊กอิน) |
+| `rotate.sh` | ตัวหมุน IP สำหรับ Linux CLI |
 | `rotate.cmd` | ตัวเรียก CLI แบบกดง่าย |
 | `plugin/` | แผงใน OpenCode Desktop (GUI plugin + bundle ที่ build แล้ว) |
 | `plugin/install.ps1` | ติดตั้งแผงเข้า OpenCode |
+| `tests/rotate-cli.test.sh` | ทดสอบ Linux CLI ด้วยคำสั่งจำลอง |
+
+## ผู้ร่วมพัฒนา
+
+- [Tatsuyato](https://github.com/Tatsuyato) — ผู้พัฒนาและผู้ส่งการเปลี่ยนแปลง
+- [GitHub Copilot](https://github.com/features/copilot) — ร่วมพัฒนา Linux CLI
 
 ## หมายเหตุ
 
